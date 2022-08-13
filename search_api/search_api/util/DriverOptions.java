@@ -1,0 +1,58 @@
+package search_api.search_api.util;
+
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+//bu class driver capabilitylerini kullanılacak yere göndermeye yarar
+public class DriverOptions {
+
+    private static ChromeOptions chromeOptions = new ChromeOptions();
+    private static FirefoxOptions firefoxOptions = new FirefoxOptions();
+    private static EdgeOptions edgeOptions = new EdgeOptions();
+
+    private static Properties properties = PropertyReader.getProperties();
+    private static String driverType = properties.getProperty("drivertype");
+
+    //options içine koyduğumuz argumentleri .properties dosyasından PropertyReader sınıfı yardımıyla alıyoruz
+    private static List<String> args = Arrays.asList(properties.get("arguments").toString().split(","));
+
+    public static MutableCapabilities getOptions(){
+
+        if (driverType.equalsIgnoreCase("chrome")){
+            chromeOptions.addArguments(args);
+            return chromeOptions;
+        }
+        else if (driverType.equalsIgnoreCase("firefox")){
+            firefoxOptions.addArguments(args);
+            return firefoxOptions;
+        }
+        else if (driverType.equalsIgnoreCase("edge")){
+            return edgeOptions;
+        }
+
+        return null;
+    }
+
+    public ChromeOptions getChromeOptions(){
+        chromeOptions.addArguments(args);
+        return chromeOptions;
+    }
+
+    public FirefoxOptions getFirefoxOptions(){
+        firefoxOptions.addArguments(args);
+        return firefoxOptions;
+    }
+
+    public EdgeOptions getEdgeOptions(){
+        return edgeOptions;
+    }
+
+
+
+}
